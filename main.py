@@ -1,11 +1,13 @@
 
+import asyncio
+
 import pygame
 from constants import RED, WIDTH, HEIGHT, SQUARE_SIZE
-from classes.board import Board
 from game import Game
 
 FPS = 60
 
+pygame.init()
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Board")
 
@@ -15,7 +17,7 @@ def get_row_col_from_mouse(pos):
     col = x // SQUARE_SIZE
     return row, col
 
-def main():
+async def main():
     run = True
     clock = pygame.time.Clock()
     game = Game(WIN)
@@ -23,7 +25,7 @@ def main():
     while run:
         clock.tick(FPS)
 
-    #check if there is a winner, if so, print the winner and stop the game
+        #check if there is a winner, if so, print the winner and stop the game
         if game.winner() != None:
             print(game.winner())
             run = False
@@ -38,9 +40,9 @@ def main():
                 game.select(row, col)
 
         game.update()
+        await asyncio.sleep(0)
 
     pygame.quit()
 
 
-
-main()
+asyncio.run(main())
